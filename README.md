@@ -19,6 +19,22 @@ The article walks through four failure modes and sorts them by direction (fail-o
 
 Permanent record: **[doi.org/10.5281/zenodo.22001956](https://doi.org/10.5281/zenodo.22001956)** (Zenodo, published 2026-08-18).
 
+## Run it yourself
+
+[`demo/gate-demo.mjs`](demo/gate-demo.mjs) is a self-contained reproduction. No dependencies, Node 18+:
+
+```
+node demo/gate-demo.mjs
+```
+
+It does three things:
+
+1. **Reproduces the published tables.** Seven matchers over both corpora. The output matches the numbers in the article, down to the three surviving false positives (`לאור`←אור, `בתום`←תום, `בשרון`←רון).
+2. **Demonstrates failure mode 4 end to end.** A manager instruction about switching off the *lights* (`אורות`), carrying one U+200B, makes the gate report that the manager named the employee **אור** — and the write executes with no approval card. The sentence renders identically to clean text on screen.
+3. **Shows the unrecordability finding as a consequence.** After the run, the audit store holds one approval card. The write that should never have happened left no card, no instruction text, and nothing that distinguishes it from a legitimate write.
+
+Part 3 applies the mitigation — Unicode normalization plus removal of format characters and Hebrew points, **before** tokenization — and the same attack fails closed. It closes mode 4 and does not touch modes 1 and 3.
+
 ## Comments, corrections, refutations
 
 The corpora and the 89-name list are published in the article **so they can be argued with**. If you found a counterexample, a failure mode I missed, a prior publication of any of the claims, or an error in a measurement — **[open an issue](../../issues)**. Refutations are welcome; that is what the artifacts are for.
